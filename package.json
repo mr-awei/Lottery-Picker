@@ -1,0 +1,60 @@
+{
+  "name": "lottery-picker",
+  "version": "1.7.0",
+  "description": "桌面端彩票选号器：双色球 + 大乐透，含往期号码、分布图、中奖地图、AI选号",
+  "main": "electron/main.js",
+  "author": "Marvis",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "electron .",
+    "dist": "vite build && electron-builder --win",
+    "fetch:ssq": "node electron/data-fetcher.js --game=ssq",
+    "fetch:dlt": "node electron/data-fetcher.js --game=dlt",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "echarts": "^5.5.0",
+    "element-plus": "^2.7.0",
+    "gpu.js": "^2.24.0",
+    "tesseract.js": "^7.0.0",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3",
+    "vite": "^5.2.0",
+    "vitest": "^4.1.11"
+  },
+  "build": {
+    "appId": "com.marvis.lotterypicker",
+    "productName": "彩票选号器",
+    "files": [
+      "electron/**/*",
+      "dist/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "installerLanguages": [
+        "zh_CN"
+      ],
+      "uninstallDisplayName": "彩票选号器",
+      "shortcutName": "彩票选号器"
+    }
+  }
+}
