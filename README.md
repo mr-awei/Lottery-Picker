@@ -4,6 +4,16 @@ Windows 桌面端彩票选号工具，基于 **Electron + Vue3 + Vite**。完全
 
 > ⚠️ **理性购彩提示**：彩票开奖为独立随机事件，本软件所有选号、评分、统计与推荐均不提高中奖概率，仅供娱乐参考。本软件完全免费，不含任何内购、广告与付费功能。
 
+[![GitHub Release](https://img.shields.io/github/v/release/mr-awei/Lottery-Picker?label=GitHub%20Release&color=blue)](https://github.com/mr-awei/Lottery-Picker/releases)
+
+## 📥 下载安装包
+
+本项目的 Windows 安装包（NSIS 安装程序 + 绿色 zip）由 **GitHub Actions 在每次推送时自动构建**：
+
+➡️ **[点击前往 GitHub Releases 下载最新版](https://github.com/mr-awei/Lottery-Picker/releases)**
+
+> 说明：Gitee 仓库仅镜像源码，**安装包统一在 GitHub 发布**。GitHub 与 Gitee 代码完全同步，下载请走上方 GitHub 链接。
+
 ---
 
 ## ✨ 功能特性
@@ -299,6 +309,7 @@ npm ci && npm run dist      # vite build + electron-builder --win
 
 - 普通推送：构建产物作为 **Actions 制品（artifact）** 留存 30 天，可在仓库 `Actions` 页下载。
 - 打标签推送（如 `v1.7.1`）：自动创建 **GitHub Release** 并上传 `release/*.exe` 与 `release/*.zip`。
+  - 若 GitHub 仓库配置了 `GITEE_TOKEN` 密钥，还会在 Gitee 同步一个「指向 GitHub 下载页」的发行版，Gitee 访客可一键跳转。
 
 建议在发版时打标签以获得带安装包的正式 Release：
 

@@ -54,3 +54,20 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 可选：在 Gitee 同步一个“指向 GitHub”的发行版，方便 Gitee 访客一键跳转下载。
+      # 需要先在 GitHub 仓库 Settings → Secrets 添加 GITEE_TOKEN（Gitee 私人令牌，勾选 projects 权限）。
+      - name: Mirror release link to Gitee
+        if: startsWith(github.ref, 'refs/tags/v') && env.GITEE_TOKEN != ''
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          GH_RELEASE="https://github.com/mr-awei/Lottery-Picker/releases/tag/${TAG}"
+          BODY="本版本 Windows 安装包已由 GitHub Actions 自动构建，请前往 GitHub 下载：%0A${GH_RELEASE}"
+          curl -sS -X POST \
+            "https://gitee.com/api/v5/repos/mr-awei/lottery-picker/releases?access_token=${GITEE_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"tag_name\":\"${TAG}\",\"name\":\"${TAG}\",\"body\":\"${BODY}\",\"prerelease\":false}" \
+            || echo "Gitee 发行版已存在或创建失败，跳过（不影响 GitHub 构建）"
