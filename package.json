@@ -25,8 +25,11 @@
     "@vitejs/plugin-vue": "^5.0.0",
     "electron": "^31.0.0",
     "electron-builder": "^24.13.3",
-    "vite": "^5.2.0",
-    "vitest": "^4.1.11"
+    "vite": "5.4.21",
+    "vitest": "^2.1.9"
+  },
+  "overrides": {
+    "vite": "5.4.21"
   },
   "build": {
     "appId": "com.marvis.lotterypicker",
