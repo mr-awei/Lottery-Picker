@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "start": "electron .",
-    "dist": "vite build && electron-builder --win",
+    "dist": "vite build && electron-builder --win --publish never",
     "fetch:ssq": "node electron/data-fetcher.js --game=ssq",
     "fetch:dlt": "node electron/data-fetcher.js --game=dlt",
     "test": "vitest run"
