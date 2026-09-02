@@ -307,11 +307,11 @@ git push
 npm ci && npm run dist      # vite build + electron-builder --win
 ```
 
-- 普通推送：构建产物作为 **Actions 制品（artifact）** 留存 30 天，可在仓库 `Actions` 页下载。
-- 打标签推送（如 `v1.7.1`）：自动创建 **GitHub Release** 并上传 `release/*.exe` 与 `release/*.zip`。
+- **每次推 `master`**：自动构建并在 GitHub 发布一个名为 `latest` 的**预发布 Release**，附带 `release/*.exe` 与 `release/*.zip`，可直接在仓库 Releases 页下载。
+- **打标签推送（如 `v1.7.1`）**：自动创建**正式 Release**（同名标签），附带安装包。
   - 若 GitHub 仓库配置了 `GITEE_TOKEN` 密钥，还会在 Gitee 同步一个「指向 GitHub 下载页」的发行版，Gitee 访客可一键跳转。
 
-建议在发版时打标签以获得带安装包的正式 Release：
+发版时打标签即可生成稳定的正式 Release：
 
 ```bash
 git tag v1.7.1

@@ -50,19 +50,30 @@ jobs:
           path: release/*
           retention-days: 30
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Remove old rolling "latest" release (only on master)
+        if: github.ref == 'refs/heads/master'
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --yes || true
+          git push --delete origin latest || true
+
+      - name: Publish Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v2
         with:
           files: release/*
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: ${{ github.ref == 'refs/heads/master' }}
+          tag_name: ${{ github.ref == 'refs/heads/master' && 'latest' || github.ref_name }}
+          name: ${{ github.ref == 'refs/heads/master' && format('Continuous Build {0}', github.sha) || github.ref_name }}
 
       # 可选：在 Gitee 同步一个“指向 GitHub”的发行版，方便 Gitee 访客一键跳转下载。
       # 需要先在 GitHub 仓库 Settings → Secrets 添加 GITEE_TOKEN（Gitee 私人令牌，勾选 projects 权限）。
       - name: Mirror release link to Gitee
-        if: startsWith(github.ref, 'refs/tags/v') && env.GITEE_TOKEN != ''
+        if: startsWith(github.ref, 'refs/tags/v') && secrets.GITEE_TOKEN != ''
         env:
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
         shell: bash
