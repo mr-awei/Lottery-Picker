@@ -268,3 +268,41 @@ npm test
 ### v1.0.0（初始版本）
 - 双色球 + 大乐透基础功能
 - 往期开奖、分布图、AI 选号
+
+---
+
+## 🔄 双端同步与自动构建
+
+仓库同时托管在 **GitHub** 与 **Gitee**，并通过 Git 配置实现「一次推送、双端同步」，再配合 GitHub Actions 在每次推送后**自动构建 Windows 安装包**。
+
+### 一次推送，双端同步
+
+`origin` 已配置两个推送地址，一条命令即可同时推送到 GitHub 和 Gitee：
+
+```bash
+# 首次推送（建立上游跟踪）
+git push -u origin --all --tags
+
+# 之后日常推送
+git push
+```
+
+> 拉取仍默认来自 GitHub；如需从 Gitee 拉取可 `git fetch gitee`。
+
+### 自动构建安装包
+
+推送（或打 `v*` 标签）到 `master` 分支后，GitHub Actions（`.github/workflows/build.yml`）会在 Windows 环境自动执行：
+
+```bash
+npm ci && npm run dist      # vite build + electron-builder --win
+```
+
+- 普通推送：构建产物作为 **Actions 制品（artifact）** 留存 30 天，可在仓库 `Actions` 页下载。
+- 打标签推送（如 `v1.7.1`）：自动创建 **GitHub Release** 并上传 `release/*.exe` 与 `release/*.zip`。
+
+建议在发版时打标签以获得带安装包的正式 Release：
+
+```bash
+git tag v1.7.1
+git push origin master --tags
+```
