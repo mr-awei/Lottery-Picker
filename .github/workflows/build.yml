@@ -38,10 +38,12 @@ jobs:
         shell: bash
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
-          npm_config_msvs_version: 2022
         run: |
           set -x
-          npm ci
+          # 跳过所有原生编译脚本（gl 等 gpu.js 可选依赖在 Electron 中用不到）
+          npm ci --ignore-scripts
+          # 单独补下载 Electron 二进制（其 postinstall 被上面跳过了）
+          node node_modules/electron/install.js
           npm run dist
           echo "=== release directory contents ==="
           ls -la release/ 2>&1 || echo "release/ directory NOT FOUND or EMPTY"

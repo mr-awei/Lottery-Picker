@@ -34,6 +34,7 @@
   "build": {
     "appId": "com.marvis.lotterypicker",
     "productName": "彩票选号器",
+    "npmRebuild": false,
     "files": [
       "electron/**/*",
       "dist/**/*",
