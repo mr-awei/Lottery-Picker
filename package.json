@@ -1,10 +1,10 @@
 {
   "name": "lottery-picker",
-  "version": "1.7.0",
+  "version": "1.7.2",
   "description": "桌面端彩票选号器：双色球 + 大乐透，含往期号码、分布图、中奖地图、AI选号",
   "main": "electron/main.js",
   "author": "Marvis",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

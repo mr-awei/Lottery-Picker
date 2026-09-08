@@ -20,3 +20,6 @@ src/**/*_*_*_*.js
 .DS_Store
 Thumbs.db
 
+
+# IDE / 工具配置
+.codebuddy/

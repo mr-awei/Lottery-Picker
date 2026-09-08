@@ -147,16 +147,43 @@
         <el-divider style="margin: 14px 0" />
         <div class="about-line dim">理性购彩提示：彩票开奖为独立随机事件，本软件提供的所有统计、评分、推荐均不提高中奖概率，仅供组合参考。未成年人不得购彩，请量力而行。</div>
         <div class="about-line dim">数据来源：中国福利彩票发行管理中心（双色球）与中国体育彩票官方公开接口。数据可能存在延迟或异常，请以官方公告为准。</div>
+        <el-divider style="margin: 14px 0" />
+        <div class="license-row">
+          <div class="set-info">
+            <div class="set-label">开源协议</div>
+            <div class="set-desc">{{ LICENSE_TITLE_ZH }} · 非商业免费 / 商业需授权 / 严禁恶意程序</div>
+          </div>
+          <el-button size="small" type="primary" plain @click="licenseVisible = true">查看协议</el-button>
+        </div>
       </div>
     </div>
+
+    <el-dialog
+      v-model="licenseVisible"
+      :title="LICENSE_TITLE_ZH"
+      width="720px"
+      top="6vh"
+      class="license-dialog"
+      append-to-body
+    >
+      <div class="license-sub">{{ LICENSE_TITLE_EN }} · 版权所有 © 2026 彩票选号器</div>
+      <pre class="license-text">{{ LICENSE_TEXT }}</pre>
+      <div class="license-contact">
+        <span class="license-contact-label">商业授权联系：</span>
+        <el-button size="small" type="primary" link @click="copyEmail">{{ CONTACT_EMAIL }}</el-button>
+        <span class="license-contact-tip dim">（点击邮箱可复制）</span>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import { ElMessage } from 'element-plus'
 import { GAME_CONFIG } from '../utils/game-config'
 import { theme, applyTheme } from '../utils/ui-state'
 import { APP_VERSION, CHANGELOG } from '../utils/version'
+import { LICENSE_TITLE_ZH, LICENSE_TITLE_EN, LICENSE_TEXT, CONTACT_EMAIL } from '../utils/license'
 import { initGPU, getGPUInfo, runBenchmark, makeSyntheticDraws, setGPUPreference, getPreferredScheme, getPreferredDeviceIndex, SCHEME_LABELS } from '../utils/gpu-engine'
 import { computeStats, computeDirectStats } from '../utils/picker-engine'
 
@@ -311,6 +338,18 @@ function onViolentAttemptsChange(val) {
   localStorage.setItem(VIOLENT_ATTEMPTS_KEY, String(val || 100000))
   window.dispatchEvent(new CustomEvent('lp-ai-settings-change'))
 }
+
+// 开源协议弹窗
+const licenseVisible = ref(false)
+function copyEmail() {
+  const done = () => ElMessage.success('邮箱已复制：' + CONTACT_EMAIL)
+  const fail = () => ElMessage.info('请手动复制：' + CONTACT_EMAIL)
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(CONTACT_EMAIL).then(done, fail)
+  } else {
+    fail()
+  }
+}
 </script>
 
 <style scoped>
@@ -412,5 +451,59 @@ function onViolentAttemptsChange(val) {
   font-size: 12px;
   line-height: 1.9;
   color: var(--text-main);
+}
+
+.license-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+</style>
+
+<style>
+/* 开源协议弹窗（append-to-body，需全局样式） */
+.license-dialog .el-dialog__body {
+  padding-top: 0;
+}
+
+.license-dialog .license-sub {
+  font-size: 12px;
+  color: var(--text-dim, #909399);
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.license-dialog .license-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-main, #303133);
+  background: var(--card-inset, #f7f8fa);
+  border: 1px solid var(--border-light, #ebeef5);
+  border-radius: 8px;
+  padding: 14px 16px;
+  max-height: 52vh;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.license-dialog .license-contact {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-main, #303133);
+}
+
+.license-dialog .license-contact-label {
+  font-weight: 600;
+}
+
+.license-dialog .license-contact-tip {
+  font-size: 12px;
 }
 </style>
